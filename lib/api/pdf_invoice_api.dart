@@ -16,7 +16,6 @@ class PdfInvoiceApi {
     pdf.addPage(MultiPage(
       build: (context) => [
         buildHeader(invoice),
-        SizedBox(height: 3 * PdfPageFormat.cm),
         buildTitle(invoice),
         buildInvoice(invoice),
         Divider(),
@@ -31,28 +30,17 @@ class PdfInvoiceApi {
   static Widget buildHeader(Invoice invoice) => Column(
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
-          SizedBox(height: 1 * PdfPageFormat.cm),
           Row(
-            mainAxisAlignment: MainAxisAlignment.spaceBetween,
-            children: [
-              buildSupplierAddress(invoice.supplier),
-              Container(
-                height: 50,
-                width: 50,
-                child: BarcodeWidget(
-                  barcode: Barcode.qrCode(),
-                  data: invoice.info.number,
-                ),
-              ),
-            ],
-          ),
-          SizedBox(height: 1 * PdfPageFormat.cm),
-          Row(
-            crossAxisAlignment: CrossAxisAlignment.end,
             mainAxisAlignment: MainAxisAlignment.spaceBetween,
             children: [
               buildCustomerAddress(invoice.customer),
               buildInvoiceInfo(invoice.info),
+            ],
+          ),
+          Row(
+            mainAxisAlignment: MainAxisAlignment.spaceBetween,
+            children: [
+              buildSupplierAddress(invoice.supplier),
             ],
           ),
         ],
@@ -61,8 +49,14 @@ class PdfInvoiceApi {
   static Widget buildCustomerAddress(Customer customer) => Column(
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
-          Text(customer.name, style: TextStyle(fontWeight: FontWeight.bold)),
-          Text(customer.address),
+          Text(
+            customer.name,
+            style: TextStyle(fontWeight: FontWeight.bold),
+          ),
+          Container(
+            height: 20,
+            child: Text(customer.address),
+          ),
         ],
       );
 
